@@ -13,11 +13,6 @@ from src.ml.model import train_model
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 
-# Create temporary directory
-PATH = 'test_temp_dir'
-if not os.path.exists(PATH):
-    os.mkdir(PATH)
-
 
 @pytest.fixture()
 def data():
@@ -28,12 +23,11 @@ def data():
     try:
         df = pd.read_csv("data/census_cleaned.csv")
         logging.info("Data fixture: SUCCESS")
+        return df
 
     except FileNotFoundError as err:
         logging.error("Testing data fixture: The file wasn't found")
         raise err
-
-    return df
 
 
 @pytest.fixture()
@@ -54,15 +48,15 @@ def processed_data(data):
     ]
     try:
         X, y, encoder, lb = process_data(
-            data, categorical_features=cat_features, label="salary", training=True, dir=PATH
+            data, categorical_features=cat_features, label="salary", training=True
         )
         logging.info("Processed process_data fixture: SUCCESS")
+        return X, y, encoder, lb
 
     except Exception as e:
         logging.error("Testing process_data fixture: FAILED")
         raise e
-
-    return X, y, encoder, lb
+    
 
 
 def test_data_process(processed_data):
@@ -75,12 +69,10 @@ def test_data_process(processed_data):
 
         assert isinstance(encoder, OneHotEncoder)
         assert isinstance(lb, LabelBinarizer)
-
-        joblib.load(path.join(PATH, 'lb.pkl'))
-        joblib.load(path.join(PATH, 'encoder.pkl'))
-
         assert len(X) == len(y)
 
+        joblib.load('model/lb.pkl')
+        joblib.load('model/encoder.pkl')
         logging.info("Testing process_data: SUCCESS")
 
     except Exception as e:
@@ -95,17 +87,10 @@ def test_train_model(processed_data):
 
     X, y, _, _ = processed_data
     try:
-        model = train_model(X, y, dir=PATH)
-
+        model = train_model(X, y)
         assert isinstance(model, RandomForestClassifier)
 
-        joblib.load(path.join(PATH, 'model.pkl'))
-
-        os.remove(path.join(PATH, 'model.pkl'))
-        os.remove(path.join(PATH, 'lb.pkl'))
-        os.remove(path.join(PATH, 'encoder.pkl'))
-        os.rmdir(PATH)
-
+        joblib.load('model/model.pkl')
         logging.info("Testing train_model: SUCCESS")
 
     except Exception as e:
