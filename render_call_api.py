@@ -21,10 +21,10 @@ features = {
     "native-country": "United-States"
 }
 
-app_url = "https://deploying-ml-model-to-cloud-application.onrender.com/predict"
+app_url = "https://fastapi-ml-model-34p9.onrender.com/predict"
 
 response = requests.post(app_url, json=features)
 
 logging.info("Sending POST request to Render app")
 logging.info(f"Status code: {response.status_code}")
-logging.info(f"Response: {response.json()}")
+logging.info(f"Response text: {response.text}")

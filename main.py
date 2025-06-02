@@ -83,7 +83,7 @@ async def predict(input: ModelInput):
     input_df = pd.DataFrame([[input_dict[feat] for feat in features]], columns=features)
 
     # Load model and transformers
-    model = joblib.load("model/model.pkl")
+    model = joblib.load("model/rf_model.pkl")
     encoder = joblib.load("model/encoder.pkl")
     lb = joblib.load("model/lb.pkl")
 
