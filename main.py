@@ -1,10 +1,7 @@
-import os
 import joblib
 import logging
-import numpy as np
 import pandas as pd
 import uvicorn
-from typing import Literal
 from fastapi import FastAPI
 from pydantic import BaseModel, ConfigDict
 
@@ -16,6 +13,7 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 app = FastAPI()
+
 
 def hyphenize(field: str):
     return field.replace("_", "-")
@@ -80,7 +78,8 @@ async def predict(input: ModelInput):
 
     # Convert input to dataframe using field aliases
     input_dict = input.model_dump(by_alias=True)
-    input_df = pd.DataFrame([[input_dict[feat] for feat in features]], columns=features)
+    input_df = pd.DataFrame([[input_dict[feat] for feat in features]], 
+                            columns=features)
 
     # Load model and transformers
     model = joblib.load("model/rf_model.pkl")
