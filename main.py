@@ -66,6 +66,8 @@ async def say_hello():
 
 @app.post("/predict")
 async def predict(input: ModelInput):
+    print("INPUT RECEIVED:", input)
+    
     features = [
         "age", "workclass", "fnlgt", "education", "education_num",
         "marital_status", "occupation", "relationship", "race", "sex",
