@@ -67,18 +67,18 @@ async def say_hello():
 @app.post("/predict")
 async def predict(input: ModelInput):
     features = [
-        "age", "workclass", "fnlgt", "education", "education-num",
-        "marital-status", "occupation", "relationship", "race", "sex",
-        "capital-gain", "capital-loss", "hours-per-week", "native-country"
+        "age", "workclass", "fnlgt", "education", "education_num",
+        "marital_status", "occupation", "relationship", "race", "sex",
+        "capital_gain", "capital_loss", "hours_per_week", "native_country"
     ]
 
     cat_features = [
-        "workclass", "education", "marital-status",
-        "occupation", "relationship", "race", "sex", "native-country"
+        "workclass", "education", "marital_status",
+        "occupation", "relationship", "race", "sex", "native_country"
     ]
 
     # Convert input to dataframe using field aliases
-    input_dict = input.model_dump(by_alias=True)
+    input_dict = input.model_dump()
     input_df = pd.DataFrame([[input_dict[feat] for feat in features]], 
                             columns=features)
 
