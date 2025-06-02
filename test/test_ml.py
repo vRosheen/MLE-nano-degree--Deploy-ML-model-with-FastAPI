@@ -3,11 +3,13 @@ from os import path
 import logging
 import joblib
 import pytest
+import pandas as pd
 
 from sklearn.preprocessing import LabelBinarizer, OneHotEncoder
 from sklearn.ensemble import RandomForestClassifier
 
-from src.ml import import_data, process_data, train_model
+from src.ml.data import process_data
+from src.ml.model import train_model
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 
@@ -24,7 +26,7 @@ def data():
     """
 
     try:
-        df = import_data("data/census_clean.csv")
+        df = pd.read_csv("data/census_cleaned.csv")
         logging.info("Data fixture: SUCCESS")
 
     except FileNotFoundError as err:
@@ -61,22 +63,6 @@ def processed_data(data):
         raise e
 
     return X, y, encoder, lb
-
-
-def test_import_data(data):
-    """
-    Test data import - this example is completed for you to assist with the other test functions
-    """
-
-    try:
-        assert data.shape[0] > 0
-        assert data.shape[1] > 0
-        logging.info("Testing import_data: SUCCESS")
-
-    except AssertionError as err:
-        logging.error(
-            "Testing import_data: FAILED The file doesn't appear to have rows or columns")
-        raise err
 
 
 def test_data_process(processed_data):
