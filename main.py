@@ -22,6 +22,7 @@ def hyphenize(field: str):
 class ModelInput(BaseModel):
     model_config = ConfigDict(
         alias_generator=hyphenize,
+        populate_by_name=True,
         json_schema_extra={
             "example": {
                 "age": 43,
