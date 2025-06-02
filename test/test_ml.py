@@ -90,7 +90,7 @@ def test_train_model(processed_data):
         model = train_model(X, y)
         assert isinstance(model, RandomForestClassifier)
 
-        joblib.load('model/model.pkl')
+        joblib.load('model/rf_model.pkl')
         logging.info("Testing train_model: SUCCESS")
 
     except Exception as e:
