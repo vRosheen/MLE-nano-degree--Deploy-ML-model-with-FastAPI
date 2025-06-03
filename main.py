@@ -67,7 +67,7 @@ async def say_hello():
 @app.post("/predict")
 async def predict(input: ModelInput):
     print("INPUT RECEIVED:", input)
-    
+
     features = [
         "age", "workclass", "fnlgt", "education", "education_num",
         "marital_status", "occupation", "relationship", "race", "sex",
@@ -80,7 +80,7 @@ async def predict(input: ModelInput):
     ]
 
     # Convert input to dataframe using field aliases
-    input_dict = input.model_dump()
+    input_dict = input.dict()
     input_df = pd.DataFrame([[input_dict[feat] for feat in features]], 
                             columns=features)
 
